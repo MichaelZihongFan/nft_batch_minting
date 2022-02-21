@@ -12,6 +12,7 @@
  * 
  * example: https://etherscan.io/tx/0x2a48d84a8745d2d222432f496e6154347e7c7100ddfe3741838fd777a8b3868f
  * 
+ * Execute command: WALLET_PRIVATE_KEY={key} node scripts/ethersjsmint.js
  */
 
 const ethers = require('ethers');
@@ -20,8 +21,8 @@ const Wallet = ethers.Wallet;
 const Contract = ethers.Contract;
 const BigNumber = ethers.BigNumber;
 
-const CONTRACT_ADDRESS = '0xBcBcC7CbF50344Ed4445512B30897d6baD76F166';
-const CONTRACT_ABI = require('../build/contracts/test.json')
+const CONTRACT_ADDRESS = '0x33a237B384b7065C815F7c745D73a0AcF140449c';
+const CONTRACT_ABI = require('../build/contracts/Tsuki.json')
 const PRIVATE_KEY = process.env.WALLET_PRIVATE_KEY;
 
 const provider = new providers.InfuraProvider(1);
@@ -37,14 +38,14 @@ const GWEI = BigNumber.from(10).pow(9);
 // })
 const main = async () => {
     // const totalSupply = parseInt(await contractInstance.totalSupply());
-    const startTimeStamp = 1644361200000;
+    const startTimeStamp = 1645408800000;
     async function mint() {
         console.log('About to attempt. ' + startTimeStamp + ' ' + new Date().getTime());
         const result = await signer.sendTransaction({
             to: CONTRACT_ADDRESS,
-            data: '0xf366afc9',
+            data: '0x4d192b830000000000000000000000000000000000000000000000000000000000000001',
             type: 2,
-            value: 0, //ETHER.div(100).mul(5),
+            value: ETHER.div(100).mul(15), //ETHER.div(100).mul(5),
             maxFeePerGas: GWEI.mul(180),
             gasLimit: 240000, //use estimate?
             maxPriorityFeePerGas: GWEI.mul(10),
@@ -54,6 +55,7 @@ const main = async () => {
     }
     setInterval(function () {
         const currentTimeStamp = new Date().getTime();
+        console.log(currentTimeStamp)
         if (currentTimeStamp >= startTimeStamp) { // Check the time
             console.log('Minting!');
             mint()
